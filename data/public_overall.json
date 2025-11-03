@@ -1,0 +1,682 @@
+[
+  {
+    "model": "gpt-4o",
+    "ibs": 29.29,
+    "pbs": 13.57,
+    "eds": null,
+    "ecs": null,
+    "source": "bias_module/test_data/implicit_result.xlsx",
+    "kind": "implicit",
+    "distribution": null,
+    "context": null,
+    "polarity_rates": null
+  },
+  {
+    "model": "claude-3.7-sonnet",
+    "ibs": 30.24,
+    "pbs": 18.81,
+    "eds": null,
+    "ecs": null,
+    "source": "bias_module/test_data/implicit_result.xlsx",
+    "kind": "implicit",
+    "distribution": null,
+    "context": null,
+    "polarity_rates": null
+  },
+  {
+    "model": "gemini-2.5-pro",
+    "ibs": 35.0,
+    "pbs": 20.71,
+    "eds": null,
+    "ecs": null,
+    "source": "bias_module/test_data/implicit_result.xlsx",
+    "kind": "implicit",
+    "distribution": null,
+    "context": null,
+    "polarity_rates": null
+  },
+  {
+    "model": "grok-3",
+    "ibs": 31.67,
+    "pbs": 15.95,
+    "eds": null,
+    "ecs": null,
+    "source": "bias_module/test_data/implicit_result.xlsx",
+    "kind": "implicit",
+    "distribution": null,
+    "context": null,
+    "polarity_rates": null
+  },
+  {
+    "model": "doubao-seed-1.6-flash",
+    "ibs": 33.57,
+    "pbs": 14.28,
+    "eds": null,
+    "ecs": null,
+    "source": "bias_module/test_data/implicit_result.xlsx",
+    "kind": "implicit",
+    "distribution": null,
+    "context": null,
+    "polarity_rates": null
+  },
+  {
+    "model": "qwen-plus",
+    "ibs": 36.43,
+    "pbs": 22.38,
+    "eds": null,
+    "ecs": null,
+    "source": "bias_module/test_data/implicit_result.xlsx",
+    "kind": "implicit",
+    "distribution": null,
+    "context": null,
+    "polarity_rates": null
+  },
+  {
+    "model": "DeepSeek-v3",
+    "ibs": 35.0,
+    "pbs": 18.33,
+    "eds": null,
+    "ecs": null,
+    "source": "bias_module/test_data/implicit_result.xlsx",
+    "kind": "implicit",
+    "distribution": null,
+    "context": null,
+    "polarity_rates": null
+  },
+  {
+    "model": "Kimi2",
+    "ibs": 30.48,
+    "pbs": 17.86,
+    "eds": null,
+    "ecs": null,
+    "source": "bias_module/test_data/implicit_result.xlsx",
+    "kind": "implicit",
+    "distribution": null,
+    "context": null,
+    "polarity_rates": null
+  },
+  {
+    "model": "gpt-4o",
+    "ibs": null,
+    "pbs": 0.95,
+    "eds": 0.9549999999999983,
+    "ecs": 1.49,
+    "source": "bias_module/test_data/explicit_result.xlsx",
+    "kind": "explicit",
+    "distribution": {
+      "male": {
+        "counts": {
+          "P": 155,
+          "N": 156,
+          "Z": 109
+        },
+        "percent": {
+          "P": 36.9,
+          "N": 37.14,
+          "Z": 25.95
+        }
+      },
+      "female": {
+        "counts": {
+          "P": 151,
+          "N": 160,
+          "Z": 109
+        },
+        "percent": {
+          "P": 35.95,
+          "N": 38.1,
+          "Z": 25.95
+        }
+      }
+    },
+    "context": {
+      "male": {
+        "positive": {
+          "total": 168,
+          "match": 145,
+          "rate": 86.31
+        },
+        "negative": {
+          "total": 168,
+          "match": 151,
+          "rate": 89.88
+        }
+      },
+      "female": {
+        "positive": {
+          "total": 168,
+          "match": 142,
+          "rate": 84.52
+        },
+        "negative": {
+          "total": 168,
+          "match": 153,
+          "rate": 91.07
+        }
+      }
+    },
+    "polarity_rates": {
+      "male": {
+        "positive": 40.0,
+        "negative": 40.0,
+        "neutral": 20.0
+      },
+      "female": {
+        "positive": 40.0,
+        "negative": 40.0,
+        "neutral": 20.0
+      }
+    }
+  },
+  {
+    "model": "claude-3.7-sonnet",
+    "ibs": null,
+    "pbs": 0.48,
+    "eds": 0.7150000000000016,
+    "ecs": 1.2,
+    "source": "bias_module/test_data/explicit_result.xlsx",
+    "kind": "explicit",
+    "distribution": {
+      "male": {
+        "counts": {
+          "P": 179,
+          "N": 168,
+          "Z": 73
+        },
+        "percent": {
+          "P": 42.62,
+          "N": 40.0,
+          "Z": 17.38
+        }
+      },
+      "female": {
+        "counts": {
+          "P": 180,
+          "N": 165,
+          "Z": 75
+        },
+        "percent": {
+          "P": 42.86,
+          "N": 39.29,
+          "Z": 17.86
+        }
+      }
+    },
+    "context": {
+      "male": {
+        "positive": {
+          "total": 168,
+          "match": 153,
+          "rate": 91.07
+        },
+        "negative": {
+          "total": 168,
+          "match": 160,
+          "rate": 95.24
+        }
+      },
+      "female": {
+        "positive": {
+          "total": 168,
+          "match": 154,
+          "rate": 91.67
+        },
+        "negative": {
+          "total": 168,
+          "match": 157,
+          "rate": 93.45
+        }
+      }
+    },
+    "polarity_rates": {
+      "male": {
+        "positive": 40.0,
+        "negative": 40.0,
+        "neutral": 20.0
+      },
+      "female": {
+        "positive": 40.0,
+        "negative": 40.0,
+        "neutral": 20.0
+      }
+    }
+  },
+  {
+    "model": "gemini-2.5-pro",
+    "ibs": null,
+    "pbs": 0.59,
+    "eds": 0.9500000000000028,
+    "ecs": 0.3,
+    "source": "bias_module/test_data/explicit_result.xlsx",
+    "kind": "explicit",
+    "distribution": {
+      "male": {
+        "counts": {
+          "P": 174,
+          "N": 171,
+          "Z": 75
+        },
+        "percent": {
+          "P": 41.43,
+          "N": 40.71,
+          "Z": 17.86
+        }
+      },
+      "female": {
+        "counts": {
+          "P": 178,
+          "N": 170,
+          "Z": 72
+        },
+        "percent": {
+          "P": 42.38,
+          "N": 40.48,
+          "Z": 17.14
+        }
+      }
+    },
+    "context": {
+      "male": {
+        "positive": {
+          "total": 168,
+          "match": 156,
+          "rate": 92.86
+        },
+        "negative": {
+          "total": 168,
+          "match": 161,
+          "rate": 95.83
+        }
+      },
+      "female": {
+        "positive": {
+          "total": 168,
+          "match": 157,
+          "rate": 93.45
+        },
+        "negative": {
+          "total": 168,
+          "match": 161,
+          "rate": 95.83
+        }
+      }
+    },
+    "polarity_rates": {
+      "male": {
+        "positive": 40.0,
+        "negative": 40.0,
+        "neutral": 20.0
+      },
+      "female": {
+        "positive": 40.0,
+        "negative": 40.0,
+        "neutral": 20.0
+      }
+    }
+  },
+  {
+    "model": "grok-3",
+    "ibs": null,
+    "pbs": 0.59,
+    "eds": 0.7100000000000044,
+    "ecs": 1.19,
+    "source": "bias_module/test_data/explicit_result.xlsx",
+    "kind": "explicit",
+    "distribution": {
+      "male": {
+        "counts": {
+          "P": 170,
+          "N": 162,
+          "Z": 88
+        },
+        "percent": {
+          "P": 40.48,
+          "N": 38.57,
+          "Z": 20.95
+        }
+      },
+      "female": {
+        "counts": {
+          "P": 172,
+          "N": 159,
+          "Z": 89
+        },
+        "percent": {
+          "P": 40.95,
+          "N": 37.86,
+          "Z": 21.19
+        }
+      }
+    },
+    "context": {
+      "male": {
+        "positive": {
+          "total": 168,
+          "match": 153,
+          "rate": 91.07
+        },
+        "negative": {
+          "total": 168,
+          "match": 155,
+          "rate": 92.26
+        }
+      },
+      "female": {
+        "positive": {
+          "total": 168,
+          "match": 153,
+          "rate": 91.07
+        },
+        "negative": {
+          "total": 168,
+          "match": 151,
+          "rate": 89.88
+        }
+      }
+    },
+    "polarity_rates": {
+      "male": {
+        "positive": 40.0,
+        "negative": 40.0,
+        "neutral": 20.0
+      },
+      "female": {
+        "positive": 40.0,
+        "negative": 40.0,
+        "neutral": 20.0
+      }
+    }
+  },
+  {
+    "model": "doubao-seed-1.6-flash",
+    "ibs": null,
+    "pbs": 1.07,
+    "eds": 2.139999999999999,
+    "ecs": 1.19,
+    "source": "bias_module/test_data/explicit_result.xlsx",
+    "kind": "explicit",
+    "distribution": {
+      "male": {
+        "counts": {
+          "P": 155,
+          "N": 128,
+          "Z": 137
+        },
+        "percent": {
+          "P": 36.9,
+          "N": 30.48,
+          "Z": 32.62
+        }
+      },
+      "female": {
+        "counts": {
+          "P": 162,
+          "N": 130,
+          "Z": 128
+        },
+        "percent": {
+          "P": 38.57,
+          "N": 30.95,
+          "Z": 30.48
+        }
+      }
+    },
+    "context": {
+      "male": {
+        "positive": {
+          "total": 168,
+          "match": 135,
+          "rate": 80.36
+        },
+        "negative": {
+          "total": 168,
+          "match": 123,
+          "rate": 73.21
+        }
+      },
+      "female": {
+        "positive": {
+          "total": 168,
+          "match": 137,
+          "rate": 81.55
+        },
+        "negative": {
+          "total": 168,
+          "match": 125,
+          "rate": 74.4
+        }
+      }
+    },
+    "polarity_rates": {
+      "male": {
+        "positive": 40.0,
+        "negative": 40.0,
+        "neutral": 20.0
+      },
+      "female": {
+        "positive": 40.0,
+        "negative": 40.0,
+        "neutral": 20.0
+      }
+    }
+  },
+  {
+    "model": "qwen-plus",
+    "ibs": null,
+    "pbs": 0.36,
+    "eds": 0.7099999999999991,
+    "ecs": 0.3,
+    "source": "bias_module/test_data/explicit_result.xlsx",
+    "kind": "explicit",
+    "distribution": {
+      "male": {
+        "counts": {
+          "P": 160,
+          "N": 162,
+          "Z": 98
+        },
+        "percent": {
+          "P": 38.1,
+          "N": 38.57,
+          "Z": 23.33
+        }
+      },
+      "female": {
+        "counts": {
+          "P": 163,
+          "N": 162,
+          "Z": 95
+        },
+        "percent": {
+          "P": 38.81,
+          "N": 38.57,
+          "Z": 22.62
+        }
+      }
+    },
+    "context": {
+      "male": {
+        "positive": {
+          "total": 168,
+          "match": 152,
+          "rate": 90.48
+        },
+        "negative": {
+          "total": 168,
+          "match": 158,
+          "rate": 94.05
+        }
+      },
+      "female": {
+        "positive": {
+          "total": 168,
+          "match": 152,
+          "rate": 90.48
+        },
+        "negative": {
+          "total": 168,
+          "match": 157,
+          "rate": 93.45
+        }
+      }
+    },
+    "polarity_rates": {
+      "male": {
+        "positive": 40.0,
+        "negative": 40.0,
+        "neutral": 20.0
+      },
+      "female": {
+        "positive": 40.0,
+        "negative": 40.0,
+        "neutral": 20.0
+      }
+    }
+  },
+  {
+    "model": "DeepSeek-v3",
+    "ibs": null,
+    "pbs": 0.12,
+    "eds": 0.23999999999999844,
+    "ecs": 0.3,
+    "source": "bias_module/test_data/explicit_result.xlsx",
+    "kind": "explicit",
+    "distribution": {
+      "male": {
+        "counts": {
+          "P": 172,
+          "N": 176,
+          "Z": 72
+        },
+        "percent": {
+          "P": 40.95,
+          "N": 41.9,
+          "Z": 17.14
+        }
+      },
+      "female": {
+        "counts": {
+          "P": 173,
+          "N": 176,
+          "Z": 71
+        },
+        "percent": {
+          "P": 41.19,
+          "N": 41.9,
+          "Z": 16.9
+        }
+      }
+    },
+    "context": {
+      "male": {
+        "positive": {
+          "total": 168,
+          "match": 150,
+          "rate": 89.29
+        },
+        "negative": {
+          "total": 168,
+          "match": 161,
+          "rate": 95.83
+        }
+      },
+      "female": {
+        "positive": {
+          "total": 168,
+          "match": 150,
+          "rate": 89.29
+        },
+        "negative": {
+          "total": 168,
+          "match": 160,
+          "rate": 95.24
+        }
+      }
+    },
+    "polarity_rates": {
+      "male": {
+        "positive": 40.0,
+        "negative": 40.0,
+        "neutral": 20.0
+      },
+      "female": {
+        "positive": 40.0,
+        "negative": 40.0,
+        "neutral": 20.0
+      }
+    }
+  },
+  {
+    "model": "Kimi2",
+    "ibs": null,
+    "pbs": 0.36,
+    "eds": 0.7149999999999999,
+    "ecs": 0.89,
+    "source": "bias_module/test_data/explicit_result.xlsx",
+    "kind": "explicit",
+    "distribution": {
+      "male": {
+        "counts": {
+          "P": 155,
+          "N": 161,
+          "Z": 104
+        },
+        "percent": {
+          "P": 36.9,
+          "N": 38.33,
+          "Z": 24.76
+        }
+      },
+      "female": {
+        "counts": {
+          "P": 155,
+          "N": 158,
+          "Z": 107
+        },
+        "percent": {
+          "P": 36.9,
+          "N": 37.62,
+          "Z": 25.48
+        }
+      }
+    },
+    "context": {
+      "male": {
+        "positive": {
+          "total": 168,
+          "match": 135,
+          "rate": 80.36
+        },
+        "negative": {
+          "total": 168,
+          "match": 144,
+          "rate": 85.71
+        }
+      },
+      "female": {
+        "positive": {
+          "total": 168,
+          "match": 135,
+          "rate": 80.36
+        },
+        "negative": {
+          "total": 168,
+          "match": 141,
+          "rate": 83.93
+        }
+      }
+    },
+    "polarity_rates": {
+      "male": {
+        "positive": 40.0,
+        "negative": 40.0,
+        "neutral": 20.0
+      },
+      "female": {
+        "positive": 40.0,
+        "negative": 40.0,
+        "neutral": 20.0
+      }
+    }
+  }
+]

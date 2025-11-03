@@ -1,0 +1,17 @@
+model,source,kind,ibs,pbs,eds,ecs
+gpt-4o,bias_module/test_data/implicit_result.xlsx,implicit,29.29,13.57,,
+claude-3.7-sonnet,bias_module/test_data/implicit_result.xlsx,implicit,30.24,18.81,,
+gemini-2.5-pro,bias_module/test_data/implicit_result.xlsx,implicit,35.0,20.71,,
+grok-3,bias_module/test_data/implicit_result.xlsx,implicit,31.67,15.95,,
+doubao-seed-1.6-flash,bias_module/test_data/implicit_result.xlsx,implicit,33.57,14.28,,
+qwen-plus,bias_module/test_data/implicit_result.xlsx,implicit,36.43,22.38,,
+DeepSeek-v3,bias_module/test_data/implicit_result.xlsx,implicit,35.0,18.33,,
+Kimi2,bias_module/test_data/implicit_result.xlsx,implicit,30.48,17.86,,
+gpt-4o,bias_module/test_data/explicit_result.xlsx,explicit,,0.95,0.9549999999999983,1.49
+claude-3.7-sonnet,bias_module/test_data/explicit_result.xlsx,explicit,,0.48,0.7150000000000016,1.2
+gemini-2.5-pro,bias_module/test_data/explicit_result.xlsx,explicit,,0.59,0.9500000000000028,0.3
+grok-3,bias_module/test_data/explicit_result.xlsx,explicit,,0.59,0.7100000000000044,1.19
+doubao-seed-1.6-flash,bias_module/test_data/explicit_result.xlsx,explicit,,1.07,2.139999999999999,1.19
+qwen-plus,bias_module/test_data/explicit_result.xlsx,explicit,,0.36,0.7099999999999991,0.3
+DeepSeek-v3,bias_module/test_data/explicit_result.xlsx,explicit,,0.12,0.23999999999999844,0.3
+Kimi2,bias_module/test_data/explicit_result.xlsx,explicit,,0.36,0.7149999999999999,0.89

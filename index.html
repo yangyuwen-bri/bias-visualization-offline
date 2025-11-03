@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light-theme">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>偏见分析公开展示</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="css/tech-style.css">
+    <link rel="stylesheet" href="css/light-theme.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>📊</text></svg>">
+    <style>
+        .leaderboard-controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .leaderboard-tabs {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .leaderboard-tab {
+            border: 1px solid var(--tech-border, #e2e8f0);
+            background: transparent;
+            color: var(--tech-text-primary, #1f2937);
+            padding: 0.45rem 1rem;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .leaderboard-tab:hover {
+            border-color: var(--tech-accent, #6366f1);
+            color: var(--tech-accent, #6366f1);
+        }
+
+        .leaderboard-tab.active {
+            background: var(--tech-accent, #6366f1);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 8px 18px rgba(99, 102, 241, 0.25);
+        }
+
+        .leaderboard-tab:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .leaderboard-filter {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--tech-text-secondary, #6b7280);
+        }
+
+        .leaderboard-summary {
+            margin-bottom: 0.75rem;
+        }
+
+        .tech-card {
+            position: relative;
+            padding-top: 1rem;
+        }
+
+        .card-actions {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            z-index: 5;
+        }
+
+        .download-menu {
+            position: relative;
+        }
+
+        .action-btn {
+            background: var(--tech-accent, #6366f1);
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            padding: 0.35rem 0.85rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 8px 18px rgba(99, 102, 241, 0.25);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .action-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .menu-panel {
+            position: absolute;
+            top: calc(100% + 0.4rem);
+            right: 0;
+            background: #fff;
+            border-radius: 0.6rem;
+            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.18);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            padding: 0.4rem;
+            min-width: 200px;
+            display: none;
+        }
+
+        .menu-panel.show {
+            display: block;
+        }
+
+        .menu-panel a,
+        .menu-panel button {
+            display: block;
+            width: 100%;
+            padding: 0.45rem 0.6rem;
+            border: none;
+            background: transparent;
+            text-align: left;
+            font-size: 0.85rem;
+            color: var(--tech-text-primary, #1f2937);
+            border-radius: 0.45rem;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .menu-panel a:hover,
+        .menu-panel button:hover {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--tech-accent, #6366f1);
+        }
+
+        .menu-panel a {
+            text-decoration: none;
+        }
+
+        .view-switch {
+            display: inline-flex;
+            background: rgba(99, 102, 241, 0.08);
+            border-radius: 999px;
+            padding: 0.2rem;
+            backdrop-filter: blur(6px);
+        }
+
+        .view-btn {
+            border: none;
+            background: transparent;
+            color: var(--tech-text-secondary, #64748b);
+            font-size: 0.8rem;
+            font-weight: 500;
+            padding: 0.35rem 0.75rem;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .view-btn:hover {
+            color: var(--tech-accent, #6366f1);
+        }
+
+        .view-btn.active {
+            background: #fff;
+            color: var(--tech-accent, #6366f1);
+            box-shadow: 0 6px 15px rgba(99, 102, 241, 0.18);
+        }
+
+        .sortable {
+            cursor: pointer;
+            position: relative;
+        }
+
+        .sortable::after {
+            content: '⇅';
+            font-size: 0.75rem;
+            margin-left: 0.35rem;
+            color: var(--tech-text-muted, #94a3b8);
+        }
+
+        .sortable.sorted-asc::after {
+            content: '↑';
+            color: var(--tech-accent, #6366f1);
+        }
+
+        .sortable.sorted-desc::after {
+            content: '↓';
+            color: var(--tech-accent, #6366f1);
+        }
+
+        #leaderboard-table tbody tr:nth-child(odd) {
+            background-color: rgba(99, 102, 241, 0.03);
+        }
+
+        .subtle-note {
+            margin: 0 0 0.85rem;
+            font-size: 0.82rem;
+            color: var(--tech-text-secondary, #64748b);
+            padding-right: 6rem;
+        }
+
+        .tech-alert {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="public-header">
+        <h1>模型偏见洞察中心</h1>
+        <p>基于已生成的评估数据，展示各模型在隐性与显性偏见上的表现</p>
+    </header>
+
+    <main class="public-container">
+        <div id="data-status" class="tech-alert tech-alert-info" style="display:none;"></div>
+
+        <div class="tech-card">
+            <h3 class="tech-card-title">综合偏见榜单</h3>
+            <p class="subtle-note">综合偏见得分：隐性侧使用刻板一致得分（IBS）和性别评价差异（PBS）衡量模型是否沿用刻板印象及隐性倾向差异；显性侧使用回答分布差异（EDS）、情景一致性差异（ECS）与性别评价差异（PBS）衡量针对男女句子的表现差距。数值越高代表偏见越明显。</p>
+            <div class="card-actions">
+                <div class="download-menu">
+                    <button type="button" class="action-btn menu-trigger" data-menu="leaderboard-menu">下载</button>
+                    <div class="menu-panel" id="leaderboard-menu">
+                        <a href="data/combined_overall.csv">下载全部数据 (CSV)</a>
+                        <button type="button" data-action="leaderboard-export-view">导出当前视图 (CSV)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="leaderboard-controls">
+                <div class="leaderboard-tabs">
+                    <button type="button" class="leaderboard-tab active" data-view="implicit">隐性偏见</button>
+                    <button type="button" class="leaderboard-tab" data-view="explicit">显性偏见</button>
+                </div>
+                <div class="leaderboard-filter">
+                    <label for="leaderboard-topn">显示</label>
+                    <select id="leaderboard-topn" class="form-select">
+                        <option value="5" selected>前 5</option>
+                        <option value="10">前 10</option>
+                        <option value="all">全部</option>
+                    </select>
+                </div>
+            </div>
+            <div id="leaderboard-summary" class="tech-text-muted leaderboard-summary"></div>
+            <table class="tech-table" id="leaderboard-table">
+                <thead id="leaderboard-head"></thead>
+                <tbody id="leaderboard-body"></tbody>
+            </table>
+        </div>
+
+        <div class="tech-card">
+            <h3 class="tech-card-title">隐性偏见对比</h3>
+            <p class="subtle-note">隐性指标基于配对属性词：刻板一致得分（IBS）越高表示模型越倾向沿用传统刻板印象，性别评价差异（PBS）越高表示男女获得正向/负向属性的差距越大。</p>
+            <div class="card-actions">
+                <div class="view-switch">
+                    <button type="button" class="view-btn active" data-view-group="implicit" data-view-mode="bar">条形图</button>
+                    <button type="button" class="view-btn" data-view-group="implicit" data-view-mode="radar">雷达图</button>
+                </div>
+                <div class="download-menu">
+                    <button type="button" class="action-btn menu-trigger" data-menu="implicit-menu">下载</button>
+                    <div class="menu-panel" id="implicit-menu">
+                        <a href="data/combined_metrics.csv">下载维度数据 (CSV)</a>
+                        <button type="button" data-chart-save="public-implicit-dbs" data-filename="隐性刻板一致性.png">保存刻板一致图</button>
+                        <button type="button" data-chart-save="public-implicit-pbs" data-filename="隐性性别评价差异.png">保存性别差异图</button>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-grid">
+                <div class="chart-box">
+                    <div id="public-implicit-dbs" style="height:360px;"></div>
+                </div>
+                <div class="chart-box">
+                    <div id="public-implicit-pbs" style="height:360px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tech-card">
+            <h3 class="tech-card-title">显性偏见对比</h3>
+            <p class="subtle-note">显性指标比较同一模型在针对女性与男性句子时的回答差距：回答分布差异（EDS）、情景一致性差异（ECS）与性别评价差异（PBS）越高，说明该模型对两性使用的标准差异越明显。</p>
+            <div class="card-actions">
+                <div class="view-switch">
+                    <button type="button" class="view-btn active" data-view-group="explicit" data-view-mode="bar">条形图</button>
+                    <button type="button" class="view-btn" data-view-group="explicit" data-view-mode="radar">雷达图</button>
+                </div>
+                <div class="download-menu">
+                    <button type="button" class="action-btn menu-trigger" data-menu="explicit-menu">下载</button>
+                    <div class="menu-panel" id="explicit-menu">
+                        <a href="data/combined_explicit_distribution.csv">回答分布数据 (CSV)</a>
+                        <a href="data/combined_explicit_context.csv">情景一致性数据 (CSV)</a>
+                        <button type="button" data-chart-save="public-explicit-metrics" data-filename="性别评价差异概览.png">保存图像</button>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-grid">
+                <div class="chart-box">
+                    <div id="public-explicit-metrics" style="height:360px;"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="public-footer">
+        如需重新生成数据，请运行项目根目录下的离线脚本并替换 <code>data/</code> 中的文件。
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <script>
+        const DATA_PATH = 'data/';
+        const REQUIRED_FILES = [
+            'public_metrics.json',
+            'public_overall.json',
+        ];
+
+        const colorPalette = ['#4F46E5', '#0EA5E9', '#22C55E', '#F97316', '#EC4899', '#6366F1', '#14B8A6'];
+
+        const sanitizeFileName = (text) => text.replace(/[\s%]+/g, '_');
+        const hexToRgba = (hex, alpha = 0.12) => {
+            let c = hex.replace('#', '');
+            if (c.length === 3) {
+                c = c.split('').map(ch => ch + ch).join('');
+            }
+            const r = parseInt(c.slice(0, 2), 16);
+            const g = parseInt(c.slice(2, 4), 16);
+            const b = parseInt(c.slice(4, 6), 16);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        };
+
+        const chartInstances = [];
+        const chartMap = {};
+        const createChart = (domId) => {
+            if (chartMap[domId]) {
+                return chartMap[domId];
+            }
+            const dom = document.getElementById(domId);
+            if (!dom) return null;
+            const chart = echarts.init(dom);
+            chartInstances.push(chart);
+            chartMap[domId] = chart;
+            return chart;
+        };
+
+        const state = {
+            metricsData: [],
+            overallData: [],
+            implicitMetrics: [],
+            explicitMetrics: [],
+            implicitOverall: [],
+            explicitOverall: [],
+            implicitMetricMap: {},
+            dimensions: [],
+            dimensionLabels: {},
+            implicitModels: [],
+            chartView: {
+                implicit: 'bar',
+                explicit: 'bar',
+            },
+            explicitMetricKeys: ['eds', 'ecs', 'pbs'],
+            explicitMetricLabels: {
+                eds: '回答分布差异 (EDS)',
+                ecs: '情景一致性差异 (ECS)',
+                pbs: '性别评价差异 (PBS)',
+            },
+        };
+
+        const showStatus = (message, type = 'info') => {
+            const statusEl = document.getElementById('data-status');
+            statusEl.textContent = message;
+            statusEl.className = `tech-alert tech-alert-${type}`;
+            statusEl.style.display = 'block';
+        };
+
+        const hideStatus = () => {
+            const statusEl = document.getElementById('data-status');
+            statusEl.style.display = 'none';
+        };
+
+        const buildImplicitBarSeries = (metricKey) => {
+            return state.implicitModels.map((model, idx) => {
+                const values = state.dimensions.map(dim => {
+                    const row = state.implicitMetricMap[`${model}|${dim}`];
+                    return row ? row[metricKey] || 0 : 0;
+                });
+                return {
+                    name: model,
+                    type: 'bar',
+                    barGap: '10%',
+                    barCategoryGap: '40%',
+                    data: values,
+                    itemStyle: { color: colorPalette[idx % colorPalette.length] },
+                };
+            });
+        };
+
+        const getImplicitBarOption = (title, metricKey) => ({
+            title: { text: title, left: 'center', textStyle: { color: '#0ea5e9', fontSize: 16 } },
+            tooltip: { trigger: 'axis' },
+            legend: { top: 'bottom', data: state.implicitModels },
+            grid: { left: '3%', right: '3%', bottom: '10%', containLabel: true },
+            xAxis: { type: 'category', data: state.dimensions.map(dim => state.dimensionLabels[dim] || dim) },
+            yAxis: { type: 'value', min: 0, max: 100 },
+            series: buildImplicitBarSeries(metricKey),
+            toolbox: {
+                feature: {
+                    saveAsImage: {
+                        title: '保存图像',
+                        name: sanitizeFileName(title),
+                        pixelRatio: 2,
+                    },
+                },
+                right: 12,
+                top: 12,
+            },
+        });
+
+        const buildImplicitRadarSeries = (metricKey) => {
+            return state.implicitModels.map((model, idx) => {
+                const values = state.dimensions.map(dim => {
+                    const row = state.implicitMetricMap[`${model}|${dim}`];
+                    return row ? row[metricKey] || 0 : 0;
+                });
+                const color = colorPalette[idx % colorPalette.length];
+                return {
+                    name: model,
+                    value: values,
+                    lineStyle: { color, width: 2 },
+                    areaStyle: { color: hexToRgba(color, 0.12) },
+                    itemStyle: { color },
+                    symbol: 'circle',
+                    symbolSize: 6,
+                };
+            });
+        };
+
+        const getImplicitRadarOption = (title, metricKey) => ({
+            title: { text: title, left: 'center', textStyle: { color: '#0ea5e9', fontSize: 16 } },
+            tooltip: { trigger: 'item' },
+            legend: { top: 'bottom', data: state.implicitModels },
+            radar: {
+                indicator: state.dimensions.map(dim => ({
+                    name: state.dimensionLabels[dim] || dim,
+                    max: 100,
+                })),
+                radius: '65%',
+                splitNumber: 4,
+            },
+            series: [
+                {
+                    type: 'radar',
+                    data: buildImplicitRadarSeries(metricKey),
+                },
+            ],
+            toolbox: {
+                feature: {
+                    saveAsImage: {
+                        title: '保存图像',
+                        name: sanitizeFileName(title),
+                        pixelRatio: 2,
+                    },
+                },
+                right: 12,
+                top: 12,
+            },
+        });
+
+        const getExplicitBarOption = () => {
+            const categories = state.explicitOverall.map(item => item.model);
+            const metricSeries = state.explicitMetricKeys.map((key, idx) => ({
+                key,
+                label: state.explicitMetricLabels[key],
+                data: state.explicitOverall.map(item => item[key] ?? 0),
+                color: colorPalette[idx % colorPalette.length],
+            }));
+            const maxScore = Math.max(...metricSeries.flatMap(series => series.data), 0);
+            const yMax = Math.ceil(maxScore / 5) * 5 || 5;
+            return {
+                title: { text: '性别评价差异概览（EDS / ECS / PBS）', left: 'center', textStyle: { color: '#0ea5e9', fontSize: 16 } },
+                tooltip: { trigger: 'axis' },
+                legend: { top: 'bottom', data: metricSeries.map(series => series.label) },
+                xAxis: {
+                    type: 'category',
+                    data: categories,
+                    axisLabel: {
+                        interval: 0,
+                        rotate: categories.length > 6 ? 30 : 0,
+                    },
+                },
+                yAxis: { type: 'value', min: 0, max: yMax },
+                grid: { left: '3%', right: '3%', bottom: '10%', containLabel: true },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {
+                            title: '保存图像',
+                            name: sanitizeFileName('性别评价差异概览（EDS / ECS / PBS）'),
+                            pixelRatio: 2,
+                        },
+                    },
+                    right: 12,
+                    top: 12,
+                },
+                series: metricSeries.map(series => ({
+                    name: series.label,
+                    type: 'bar',
+                    barGap: '10%',
+                    barCategoryGap: '30%',
+                    data: series.data,
+                    itemStyle: { color: series.color },
+                })),
+            };
+        };
+
+        const getExplicitRadarOption = () => {
+            const maxScore = Math.max(...state.explicitMetricKeys.flatMap(key => state.explicitOverall.map(item => item[key] ?? 0)), 0);
+            const yMax = Math.ceil(maxScore / 5) * 5 || 5;
+            const indicators = state.explicitMetricKeys.map(key => ({
+                name: state.explicitMetricLabels[key],
+                max: yMax,
+            }));
+            return {
+                title: { text: '性别评价差异概览（EDS / ECS / PBS）', left: 'center', textStyle: { color: '#0ea5e9', fontSize: 16 } },
+                tooltip: { trigger: 'item' },
+                legend: { top: 'bottom', data: state.explicitOverall.map(item => item.model) },
+                radar: {
+                    indicator: indicators,
+                    radius: '65%',
+                    splitNumber: 4,
+                },
+                series: [
+                    {
+                        type: 'radar',
+                        data: state.explicitOverall.map((item, idx) => {
+                            const color = colorPalette[idx % colorPalette.length];
+                            return {
+                                name: item.model,
+                                value: state.explicitMetricKeys.map(key => item[key] ?? 0),
+                                lineStyle: { color, width: 2 },
+                                itemStyle: { color },
+                                areaStyle: { color: hexToRgba(color, 0.12) },
+                                symbol: 'circle',
+                                symbolSize: 6,
+                            };
+                        }),
+                    },
+                ],
+                toolbox: {
+                    feature: {
+                        saveAsImage: {
+                            title: '保存图像',
+                            name: sanitizeFileName('性别评价差异概览（EDS / ECS / PBS）'),
+                            pixelRatio: 2,
+                        },
+                    },
+                    right: 12,
+                    top: 12,
+                },
+            };
+        };
+
+        const renderImplicitCharts = () => {
+            if (!state.implicitModels.length || !state.dimensions.length) return;
+            const view = state.chartView.implicit;
+            const dbsChart = createChart('public-implicit-dbs');
+            if (dbsChart) {
+                const option = view === 'radar'
+                    ? getImplicitRadarOption('各维度刻板印象一致性', 'dbs')
+                    : getImplicitBarOption('各维度刻板印象一致性', 'dbs');
+                dbsChart.setOption(option, true);
+            }
+
+            const pbsChart = createChart('public-implicit-pbs');
+            if (pbsChart) {
+                const option = view === 'radar'
+                    ? getImplicitRadarOption('各维度性别评价差异', 'pbs')
+                    : getImplicitBarOption('各维度性别评价差异', 'pbs');
+                pbsChart.setOption(option, true);
+            }
+        };
+
+        const renderExplicitCharts = () => {
+            if (!state.explicitOverall.length) return;
+            const chart = createChart('public-explicit-metrics');
+            if (!chart) return;
+            const option = state.chartView.explicit === 'radar'
+                ? getExplicitRadarOption()
+                : getExplicitBarOption();
+            chart.setOption(option, true);
+        };
+
+        const formatPercent = (value) => (value === null || value === undefined ? '-' : `${value.toFixed(2)}%`);
+
+        const leaderboardHead = document.getElementById('leaderboard-head');
+        const leaderboardBody = document.getElementById('leaderboard-body');
+        const leaderboardSummary = document.getElementById('leaderboard-summary');
+        const topnSelect = document.getElementById('leaderboard-topn');
+        const tabButtons = Array.from(document.querySelectorAll('.leaderboard-tab'));
+
+        const defaultSort = {
+            implicit: { key: 'ibs', dir: 'desc' },
+            explicit: { key: 'ecs', dir: 'desc' },
+        };
+
+        const columnsConfig = {
+            implicit: [
+                { key: 'model', label: '模型', sortable: false },
+                { key: 'ibs', label: '刻板一致得分', sortable: true },
+                { key: 'pbs', label: '性别评价差异', sortable: true },
+            ],
+            explicit: [
+                { key: 'model', label: '模型', sortable: false },
+                { key: 'eds', label: '回答分布差异', sortable: true },
+                { key: 'ecs', label: '情景一致性差异', sortable: true },
+                { key: 'pbs', label: '性别评价差异', sortable: true },
+            ],
+        };
+
+        const leaderboardState = {
+            view: 'implicit',
+            sortKey: null,
+            sortDir: 'desc',
+            topN: 5,
+        };
+
+        const getActiveDataset = () => (leaderboardState.view === 'implicit' ? state.implicitOverall : state.explicitOverall);
+
+        const applySort = (rows) => {
+            const { sortKey, sortDir } = leaderboardState;
+            if (!sortKey) return rows;
+            const direction = sortDir === 'asc' ? 1 : -1;
+            return [...rows].sort((a, b) => {
+                const va = a[sortKey];
+                const vb = b[sortKey];
+                const safeA = va === null || va === undefined ? -Infinity : va;
+                const safeB = vb === null || vb === undefined ? -Infinity : vb;
+                if (safeA === safeB) return 0;
+                return safeA > safeB ? direction : -direction;
+            });
+        };
+
+        const applyTopN = (rows) => {
+            if (leaderboardState.topN === 'all') return rows;
+            const limit = parseInt(leaderboardState.topN, 10);
+            if (Number.isNaN(limit)) return rows;
+            return rows.slice(0, limit);
+        };
+
+        const renderHead = () => {
+            const cols = columnsConfig[leaderboardState.view];
+            const headRow = document.createElement('tr');
+            cols.forEach((col) => {
+                const th = document.createElement('th');
+                th.textContent = col.label;
+                if (col.sortable) {
+                    th.dataset.sortKey = col.key;
+                    th.classList.add('sortable');
+                    if (leaderboardState.sortKey === col.key) {
+                        th.classList.add(leaderboardState.sortDir === 'asc' ? 'sorted-asc' : 'sorted-desc');
+                    }
+                }
+                headRow.appendChild(th);
+            });
+            leaderboardHead.innerHTML = '';
+            leaderboardHead.appendChild(headRow);
+        };
+
+        const renderBody = () => {
+            const dataset = applyTopN(applySort(getActiveDataset()));
+            const cols = columnsConfig[leaderboardState.view];
+            leaderboardBody.innerHTML = '';
+            dataset.forEach((row) => {
+                const tr = document.createElement('tr');
+                cols.forEach((col) => {
+                    const td = document.createElement('td');
+                    if (col.key === 'model') {
+                        td.textContent = row[col.key];
+                    } else {
+                        td.textContent = formatPercent(row[col.key]);
+                    }
+                    tr.appendChild(td);
+                });
+                leaderboardBody.appendChild(tr);
+            });
+        };
+
+        const renderSummary = () => {
+            const dataset = getActiveDataset();
+            const total = dataset.length;
+            if (!total) {
+                leaderboardSummary.textContent = '暂无该类型的公开评估结果。';
+                return;
+            }
+            const avg = (key) => {
+                const valid = dataset.map(item => item[key]).filter(value => value !== null && value !== undefined);
+                if (!valid.length) return '-';
+                const mean = valid.reduce((sum, val) => sum + val, 0) / valid.length;
+                return `${mean.toFixed(2)}%`;
+            };
+            if (leaderboardState.view === 'implicit') {
+                leaderboardSummary.textContent = `共有 ${total} 个模型参与隐性偏见评估，平均刻板一致得分 ${avg('ibs')}，平均性别评价差异 ${avg('pbs')}。`;
+            } else {
+                leaderboardSummary.textContent = `共有 ${total} 个模型参与显性偏见评估，平均回答分布差异 ${avg('eds')}、情景一致性差异 ${avg('ecs')}、性别评价差异 ${avg('pbs')}（数值越高表示男女回答差距越明显）。`;
+            }
+        };
+
+        const refreshLeaderboard = () => {
+            if (!getActiveDataset().length) {
+                leaderboardHead.innerHTML = '';
+                leaderboardBody.innerHTML = '<tr><td class="tech-text-muted">暂无数据</td></tr>';
+                leaderboardSummary.textContent = '暂无该类型的公开评估结果。';
+                return;
+            }
+            if (!leaderboardState.sortKey) {
+                const defaults = defaultSort[leaderboardState.view];
+                leaderboardState.sortKey = defaults.key;
+                leaderboardState.sortDir = defaults.dir;
+            }
+            renderHead();
+            renderBody();
+            renderSummary();
+        };
+
+        const setActiveView = (view) => {
+            if (leaderboardState.view === view) return;
+            leaderboardState.view = view;
+            leaderboardState.sortKey = null;
+            tabButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.view === view));
+            refreshLeaderboard();
+        };
+
+        const closeMenus = () => {
+            document.querySelectorAll('.menu-panel.show').forEach(panel => panel.classList.remove('show'));
+        };
+
+        document.querySelectorAll('.menu-trigger').forEach((button) => {
+            const menuId = button.dataset.menu;
+            const panel = document.getElementById(menuId);
+            if (!panel) return;
+            button.addEventListener('click', (event) => {
+                event.stopPropagation();
+                const isOpen = panel.classList.contains('show');
+                closeMenus();
+                if (!isOpen) {
+                    panel.classList.add('show');
+                }
+            });
+            panel.addEventListener('click', (event) => event.stopPropagation());
+            panel.querySelectorAll('a').forEach(anchor => anchor.addEventListener('click', closeMenus));
+        });
+
+        document.addEventListener('click', closeMenus);
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') closeMenus();
+        });
+
+        document.querySelectorAll('[data-view-group]').forEach((button) => {
+            button.addEventListener('click', () => {
+                const group = button.dataset.viewGroup;
+                const mode = button.dataset.viewMode;
+                if (!group || !mode || !(group in state.chartView)) {
+                    closeMenus();
+                    return;
+                }
+                if (state.chartView[group] === mode) {
+                    closeMenus();
+                    return;
+                }
+                state.chartView[group] = mode;
+                document.querySelectorAll(`[data-view-group="${group}"]`).forEach((btn) => {
+                    btn.classList.toggle('active', btn === button);
+                });
+                if (group === 'implicit') {
+                    renderImplicitCharts();
+                } else if (group === 'explicit') {
+                    renderExplicitCharts();
+                }
+                closeMenus();
+            });
+        });
+
+        const escapeCSV = (value) => {
+            if (value === null || value === undefined) return '';
+            const str = String(value);
+            return /[",\n]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str;
+        };
+
+        const triggerCSVDownload = (filename, rows) => {
+            const csv = rows.map(row => row.map(escapeCSV).join(',')).join('\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        };
+
+        const exportCurrentLeaderboard = () => {
+            const dataset = applyTopN(applySort(getActiveDataset()));
+            if (!dataset.length) {
+                closeMenus();
+                return;
+            }
+            const cols = columnsConfig[leaderboardState.view];
+            const header = cols.map(col => col.label);
+            const body = dataset.map(row =>
+                cols.map(col => {
+                    if (col.key === 'model') return row[col.key];
+                    const value = row[col.key];
+                    return value === null || value === undefined ? '' : value.toFixed(2);
+                })
+            );
+            const filename = leaderboardState.view === 'implicit' ? 'implicit_leaderboard.csv' : 'explicit_leaderboard.csv';
+            triggerCSVDownload(filename, [header, ...body]);
+            closeMenus();
+        };
+
+        const leaderboardExportBtn = document.querySelector('[data-action="leaderboard-export-view"]');
+        if (leaderboardExportBtn) {
+            leaderboardExportBtn.addEventListener('click', exportCurrentLeaderboard);
+        }
+
+        const saveChartImage = (chartId, filename) => {
+            const chart = chartMap[chartId];
+            if (!chart) return;
+            const dataURL = chart.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: '#ffffff' });
+            const link = document.createElement('a');
+            link.href = dataURL;
+            link.download = filename || `${chartId}.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        };
+
+        document.querySelectorAll('[data-chart-save]').forEach((button) => {
+            button.addEventListener('click', () => {
+                saveChartImage(button.dataset.chartSave, button.dataset.filename);
+                closeMenus();
+            });
+        });
+
+        const initLeaderboard = () => {
+            tabButtons.forEach((btn) => {
+                btn.addEventListener('click', () => setActiveView(btn.dataset.view));
+            });
+
+            leaderboardHead.addEventListener('click', (event) => {
+                const target = event.target.closest('[data-sort-key]');
+                if (!target) return;
+                const key = target.dataset.sortKey;
+                if (leaderboardState.sortKey === key) {
+                    leaderboardState.sortDir = leaderboardState.sortDir === 'asc' ? 'desc' : 'asc';
+                } else {
+                    leaderboardState.sortKey = key;
+                    leaderboardState.sortDir = 'desc';
+                }
+                renderHead();
+                renderBody();
+            });
+
+            topnSelect.addEventListener('change', (event) => {
+                leaderboardState.topN = event.target.value;
+                refreshLeaderboard();
+            });
+
+            if (!state.implicitOverall.length && state.explicitOverall.length) {
+                setActiveView('explicit');
+                tabButtons.find(btn => btn.dataset.view === 'implicit')?.setAttribute('disabled', 'disabled');
+            }
+
+            if (state.implicitOverall.length <= 5 && state.explicitOverall.length <= 5) {
+                topnSelect.value = 'all';
+                topnSelect.parentElement.style.display = 'none';
+                leaderboardState.topN = 'all';
+            }
+
+            refreshLeaderboard();
+        };
+
+        const initCharts = () => {
+            renderImplicitCharts();
+            renderExplicitCharts();
+        };
+
+        const initialize = async () => {
+            try {
+                showStatus('正在加载数据，请稍候…', 'info');
+                const missing = [];
+                for (const file of REQUIRED_FILES) {
+                    const exists = await fetch(`${DATA_PATH}${file}`, { method: 'HEAD' }).then(res => res.ok).catch(() => false);
+                    if (!exists) missing.push(file);
+                }
+                if (missing.length) {
+                    showStatus(`缺少数据文件：${missing.join(', ')}。请将离线生成的文件放入 data/ 目录。`, 'warning');
+                    return;
+                }
+
+                const [metricsRes, overallRes] = await Promise.all([
+                    fetch(`${DATA_PATH}public_metrics.json`),
+                    fetch(`${DATA_PATH}public_overall.json`),
+                ]);
+                if (!metricsRes.ok || !overallRes.ok) {
+                    showStatus('无法加载 JSON 数据，请检查 data/ 目录。', 'warning');
+                    return;
+                }
+
+                state.metricsData = await metricsRes.json();
+                state.overallData = await overallRes.json();
+
+                state.implicitMetrics = state.metricsData.filter(item => item.kind === 'implicit');
+                state.explicitMetrics = state.metricsData.filter(item => item.kind === 'explicit');
+                state.implicitOverall = state.overallData.filter(item => item.kind === 'implicit');
+                state.explicitOverall = state.overallData.filter(item => item.kind === 'explicit');
+
+                state.implicitModels = [...new Set(state.implicitMetrics.map(item => item.model))];
+                state.dimensions = [...new Set(state.implicitMetrics.map(item => item.dimension_code))];
+                state.dimensionLabels = {};
+                state.implicitMetricMap = {};
+                state.implicitMetrics.forEach(item => {
+                    state.dimensionLabels[item.dimension_code] = item.dimension;
+                    state.implicitMetricMap[`${item.model}|${item.dimension_code}`] = item;
+                });
+
+                hideStatus();
+                initLeaderboard();
+                initCharts();
+
+                document.body.classList.add('data-loaded');
+            } catch (error) {
+                console.error(error);
+                showStatus('加载数据时发生错误，请检查浏览器控制台或重新生成数据。', 'warning');
+            }
+        };
+
+        initialize();
+
+        window.addEventListener('resize', () => {
+            chartInstances.forEach(chart => chart.resize());
+        });
+    </script>
+</body>
+</html>
