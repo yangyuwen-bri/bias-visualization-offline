@@ -1,26 +1,25 @@
 :root {
-    --tech-bg-primary: #0a0e27;
-    --tech-bg-secondary: #151935;
-    --tech-bg-card: #1a1f3a;
-    --tech-bg-hover: #242943;
+    --tech-bg-primary: #ffffff;
+    --tech-bg-secondary: #f8fafc;
+    --tech-bg-card: #ffffff;
+    --tech-bg-hover: #f1f5f9;
     
-    --tech-accent-cyan: #00d9ff;
-    --tech-accent-purple: #7c3aed;
-    --tech-accent-pink: #ec4899;
-    --tech-accent-green: #10b981;
-    --tech-accent-yellow: #f59e0b;
+    --tech-accent: #58dedf;
+    --tech-accent-blue: #3fc1eb;
+    --tech-accent-indigo: #89b1fe;
+    --tech-accent-deep: #7282d6;
     
     --tech-text-primary: #000000;
     --tech-text-secondary: #000000;
-    --tech-text-muted: #000000;
+    --tech-text-muted: #475569;
     
-    --tech-border: rgba(148, 163, 184, 0.1);
-    --tech-border-light: rgba(148, 163, 184, 0.2);
+    --tech-border: rgba(203, 213, 225, 0.7);
+    --tech-border-light: rgba(203, 213, 225, 1);
     
-    --tech-gradient-1: linear-gradient(135deg, #00d9ff 0%, #0891b2 100%);
-    --tech-gradient-2: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
-    --tech-gradient-3: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%);
-    --tech-gradient-4: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    --tech-gradient-1: linear-gradient(135deg, #58dedf 0%, #3fc1eb 100%);
+    --tech-gradient-2: linear-gradient(135deg, #89b1fe 0%, #7282d6 100%);
+    --tech-gradient-3: linear-gradient(135deg, #3fc1eb 0%, #89b1fe 100%);
+    --tech-gradient-4: linear-gradient(135deg, #58dedf 0%, #7282d6 100%);
     
     --tech-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -48,9 +47,9 @@ body::before {
     width: 100%;
     height: 100%;
     background: 
-        radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(0, 217, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 40% 20%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+        radial-gradient(circle at 20% 50%, rgba(88, 222, 223, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(137, 177, 254, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(114, 130, 214, 0.12) 0%, transparent 55%);
     z-index: -1;
     animation: floatingGradient 20s ease infinite;
 }
@@ -69,10 +68,95 @@ body::after {
     width: 100%;
     height: 100%;
     background-image: 
-        linear-gradient(rgba(148, 163, 184, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(148, 163, 184, 0.03) 1px, transparent 1px);
-    background-size: 50px 50px;
+        linear-gradient(rgba(203, 213, 225, 0.25) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(203, 213, 225, 0.2) 1px, transparent 1px);
+    background-size: 60px 60px;
     z-index: -1;
+}
+
+.public-header {
+    text-align: center;
+    padding: 3rem 1rem 2rem;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border-bottom: 1px solid var(--tech-border);
+}
+
+.public-header h1 {
+    font-size: 2.5rem;
+    margin: 0;
+    font-weight: 800;
+    background: var(--tech-gradient-1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.public-header p {
+    margin: 0.75rem auto 0;
+    max-width: 720px;
+    color: var(--tech-text-muted);
+    line-height: 1.6;
+}
+
+.public-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 3rem;
+}
+
+.public-footer {
+    text-align: center;
+    padding: 2rem 1rem 3rem;
+    color: var(--tech-text-muted);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--tech-border);
+    background: var(--tech-bg-card);
+}
+
+.chart-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.chart-grid-vertical {
+    grid-template-columns: 1fr;
+}
+
+.chart-box {
+    background: var(--tech-bg-card);
+    border: 1px solid var(--tech-border);
+    border-radius: 0.9rem;
+    padding: 1rem;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.05);
+}
+
+.tech-alert {
+    padding: 0.85rem 1rem;
+    border-radius: 0.75rem;
+    font-size: 0.9rem;
+    border: 1px solid var(--tech-border);
+    background: var(--tech-bg-secondary);
+    color: var(--tech-text-secondary);
+}
+
+.tech-alert-info {
+    background: rgba(88, 222, 223, 0.12);
+    border-color: rgba(88, 222, 223, 0.3);
+    color: #047481;
+}
+
+.tech-alert-warning {
+    background: rgba(250, 204, 21, 0.12);
+    border-color: rgba(250, 204, 21, 0.4);
+    color: #a16207;
+}
+
+.tech-alert-error {
+    background: rgba(248, 113, 113, 0.12);
+    border-color: rgba(248, 113, 113, 0.4);
+    color: #b91c1c;
 }
 
 .neon-glow {
@@ -101,7 +185,7 @@ body::after {
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle, var(--tech-accent-cyan) 0%, transparent 70%);
+    background: radial-gradient(circle, var(--tech-accent) 0%, transparent 70%);
     opacity: 0.1;
     animation: pulse 4s ease-in-out infinite;
     z-index: -1;
@@ -143,6 +227,7 @@ body::after {
     position: relative;
     overflow: hidden;
     transition: var(--tech-transition);
+    box-shadow: 0 4px 24px rgba(15, 23, 42, 0.05);
 }
 
 .tech-card::before {
@@ -164,7 +249,7 @@ body::after {
 .tech-card:hover {
     border-color: var(--tech-border-light);
     transform: translateY(-2px);
-    box-shadow: 0 10px 40px rgba(0, 217, 255, 0.1);
+    box-shadow: 0 18px 35px rgba(15, 23, 42, 0.12);
 }
 
 .tech-card-title {
@@ -207,7 +292,7 @@ body::after {
 
 .tech-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);
+    box-shadow: 0 12px 30px rgba(114, 130, 214, 0.3);
 }
 
 .tech-table {
@@ -218,7 +303,7 @@ body::after {
 
 .tech-table thead {
     background: var(--tech-bg-secondary);
-    border-bottom: 2px solid var(--tech-accent-cyan);
+    border-bottom: 2px solid var(--tech-accent);
 }
 
 .tech-table th {
@@ -241,8 +326,12 @@ body::after {
     transition: var(--tech-transition);
 }
 
+.tech-table tbody tr:nth-child(odd) {
+    background: rgba(88, 222, 223, 0.05);
+}
+
 .tech-table tbody tr:hover {
-    background: var(--tech-bg-hover);
+    background: rgba(137, 177, 254, 0.14);
 }
 
 .rank-badge {
@@ -303,7 +392,7 @@ body::after {
     width: 0.75rem;
     height: 0.75rem;
     border-radius: 50%;
-    background: var(--tech-accent-cyan);
+    background: var(--tech-accent);
 }
 
 .tech-progress {
@@ -370,12 +459,21 @@ body::after {
 .info-item-value {
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--tech-accent-cyan);
+    color: var(--tech-accent);
 }
 
 @media (max-width: 768px) {
+    .public-header {
+        padding-top: 2.5rem;
+    }
+
+    .public-header h1,
     .tech-header h1 {
         font-size: 2rem;
+    }
+
+    .public-container {
+        padding: 1.5rem 1rem 2rem;
     }
     
     .tech-card {
@@ -390,6 +488,10 @@ body::after {
     .tech-table td {
         padding: 0.75rem 0.5rem;
     }
+
+    .chart-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .tech-loader {
@@ -397,7 +499,7 @@ body::after {
     width: 20px;
     height: 20px;
     border: 2px solid var(--tech-border);
-    border-top-color: var(--tech-accent-cyan);
+    border-top-color: var(--tech-accent);
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }

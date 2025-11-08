@@ -39,15 +39,15 @@
         }
 
         .leaderboard-tab:hover {
-            border-color: var(--tech-accent, #6366f1);
-            color: var(--tech-accent, #6366f1);
+            border-color: var(--tech-accent, #58dedf);
+            color: var(--tech-accent, #58dedf);
         }
 
         .leaderboard-tab.active {
-            background: var(--tech-accent, #6366f1);
+            background: var(--tech-accent, #58dedf);
             color: #fff;
             border-color: transparent;
-            box-shadow: 0 8px 18px rgba(99, 102, 241, 0.25);
+            box-shadow: 0 8px 18px rgba(88, 222, 223, 0.35);
         }
 
         .leaderboard-tab:disabled {
@@ -86,7 +86,7 @@
         }
 
         .action-btn {
-            background: var(--tech-accent, #6366f1);
+            background: var(--tech-accent, #58dedf);
             color: #fff;
             border: none;
             border-radius: 999px;
@@ -94,7 +94,7 @@
             font-size: 0.85rem;
             font-weight: 500;
             cursor: pointer;
-            box-shadow: 0 8px 18px rgba(99, 102, 241, 0.25);
+            box-shadow: 0 8px 18px rgba(88, 222, 223, 0.35);
             transition: opacity 0.2s ease, transform 0.2s ease;
         }
 
@@ -110,7 +110,7 @@
             background: #fff;
             border-radius: 0.6rem;
             box-shadow: 0 12px 32px rgba(15, 23, 42, 0.18);
-            border: 1px solid rgba(148, 163, 184, 0.2);
+            border: 1px solid var(--tech-border, rgba(203, 213, 225, 0.7));
             padding: 0.4rem;
             min-width: 200px;
             display: none;
@@ -137,8 +137,8 @@
 
         .menu-panel a:hover,
         .menu-panel button:hover {
-            background: rgba(99, 102, 241, 0.1);
-            color: var(--tech-accent, #6366f1);
+            background: rgba(88, 222, 223, 0.15);
+            color: var(--tech-accent, #58dedf);
         }
 
         .menu-panel a {
@@ -147,7 +147,7 @@
 
         .view-switch {
             display: inline-flex;
-            background: rgba(99, 102, 241, 0.08);
+            background: rgba(88, 222, 223, 0.12);
             border-radius: 999px;
             padding: 0.2rem;
             backdrop-filter: blur(6px);
@@ -166,13 +166,13 @@
         }
 
         .view-btn:hover {
-            color: var(--tech-accent, #6366f1);
+            color: var(--tech-accent, #58dedf);
         }
 
         .view-btn.active {
             background: #fff;
-            color: var(--tech-accent, #6366f1);
-            box-shadow: 0 6px 15px rgba(99, 102, 241, 0.18);
+            color: var(--tech-accent, #58dedf);
+            box-shadow: 0 6px 15px rgba(88, 222, 223, 0.25);
         }
 
         .sortable {
@@ -189,16 +189,16 @@
 
         .sortable.sorted-asc::after {
             content: '↑';
-            color: var(--tech-accent, #6366f1);
+            color: var(--tech-accent, #58dedf);
         }
 
         .sortable.sorted-desc::after {
             content: '↓';
-            color: var(--tech-accent, #6366f1);
+            color: var(--tech-accent, #58dedf);
         }
 
         #leaderboard-table tbody tr:nth-child(odd) {
-            background-color: rgba(99, 102, 241, 0.03);
+            background-color: rgba(88, 222, 223, 0.08);
         }
 
         .subtle-note {
@@ -272,7 +272,7 @@
                     </div>
                 </div>
             </div>
-            <div class="chart-grid">
+            <div class="chart-grid chart-grid-vertical">
                 <div class="chart-box">
                     <div id="public-implicit-dbs" style="height:360px;"></div>
                 </div>
@@ -319,7 +319,38 @@
             'public_overall.json',
         ];
 
-        const colorPalette = ['#4F46E5', '#0EA5E9', '#22C55E', '#F97316', '#EC4899', '#6366F1', '#14B8A6'];
+        const colorPalette = [
+            '#58dedf', '#3fc1eb', '#89b1fe', '#7282d6', '#5a8fff',
+            '#6b7bff', '#4dcfff', '#8a6dff', '#3dd4f7', '#9085ff'
+        ];
+
+        const eeChartTheme = {
+            color: colorPalette,
+            textStyle: {
+                color: '#000000',
+                fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
+            },
+            tooltip: {
+                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                borderColor: 'rgba(203, 213, 225, 0.7)',
+                textStyle: { color: '#000000' },
+            },
+            title: {
+                textStyle: { color: '#000000' },
+            },
+            legend: {
+                textStyle: { color: '#000000' },
+            },
+            categoryAxis: {
+                axisLine: { lineStyle: { color: '#94a3b8' } },
+                axisLabel: { color: '#475569' },
+            },
+            valueAxis: {
+                axisLine: { lineStyle: { color: '#94a3b8' } },
+                splitLine: { lineStyle: { color: 'rgba(148, 163, 184, 0.4)' } },
+            },
+        };
+        echarts.registerTheme('ee-light', eeChartTheme);
 
         const sanitizeFileName = (text) => text.replace(/[\s%]+/g, '_');
         const hexToRgba = (hex, alpha = 0.12) => {
@@ -341,7 +372,7 @@
             }
             const dom = document.getElementById(domId);
             if (!dom) return null;
-            const chart = echarts.init(dom);
+            const chart = echarts.init(dom, 'ee-light');
             chartInstances.push(chart);
             chartMap[domId] = chart;
             return chart;
@@ -400,7 +431,7 @@
         };
 
         const getImplicitBarOption = (title, metricKey) => ({
-            title: { text: title, left: 'center', textStyle: { color: '#0ea5e9', fontSize: 16 } },
+            title: { text: title, left: 'center', textStyle: { color: '#3fc1eb', fontSize: 16, fontWeight: '600' } },
             tooltip: { trigger: 'axis' },
             legend: { top: 'bottom', data: state.implicitModels },
             grid: { left: '3%', right: '3%', bottom: '10%', containLabel: true },
@@ -440,7 +471,7 @@
         };
 
         const getImplicitRadarOption = (title, metricKey) => ({
-            title: { text: title, left: 'center', textStyle: { color: '#0ea5e9', fontSize: 16 } },
+            title: { text: title, left: 'center', textStyle: { color: '#3fc1eb', fontSize: 16, fontWeight: '600' } },
             tooltip: { trigger: 'item' },
             legend: { top: 'bottom', data: state.implicitModels },
             radar: {
@@ -481,7 +512,7 @@
             const maxScore = Math.max(...metricSeries.flatMap(series => series.data), 0);
             const yMax = Math.ceil(maxScore / 5) * 5 || 5;
             return {
-                title: { text: '性别评价差异概览（EDS / ECS / PBS）', left: 'center', textStyle: { color: '#0ea5e9', fontSize: 16 } },
+                title: { text: '性别评价差异概览（EDS / ECS / PBS）', left: 'center', textStyle: { color: '#3fc1eb', fontSize: 16, fontWeight: '600' } },
                 tooltip: { trigger: 'axis' },
                 legend: { top: 'bottom', data: metricSeries.map(series => series.label) },
                 xAxis: {
@@ -524,7 +555,7 @@
                 max: yMax,
             }));
             return {
-                title: { text: '性别评价差异概览（EDS / ECS / PBS）', left: 'center', textStyle: { color: '#0ea5e9', fontSize: 16 } },
+                title: { text: '性别评价差异概览（EDS / ECS / PBS）', left: 'center', textStyle: { color: '#3fc1eb', fontSize: 16, fontWeight: '600' } },
                 tooltip: { trigger: 'item' },
                 legend: { top: 'bottom', data: state.explicitOverall.map(item => item.model) },
                 radar: {
